@@ -89,11 +89,11 @@ const drawWinningLine = (combination) => {
     const endX = endCell.offsetLeft + endCell.offsetWidth / 2;
     const endY = endCell.offsetTop + endCell.offsetHeight / 2;
 
-    const width = Math.hypot(endX - startX, endY - startY);
+    const width = Math.hypot(endX - startX, endY - startY) - 50;
     const angle = Math.atan2(endY - startY, endX - startX) * (180 / Math.PI);
 
     line.style.top = `${startY}px`;
-    line.style.left = `${startX}px`;
+    line.style.left = `${startX + 25}px`;
     line.style.width = `${width}px`;
     line.style.transform = `rotate(${angle}deg)`;
     line.style.transformOrigin = '0 0';
