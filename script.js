@@ -1,6 +1,8 @@
 const cells = document.querySelectorAll('[data-cell]');
 const statusText = document.querySelector('.status');
 const resetButton = document.querySelector('.reset-button');
+const board = document.querySelector('.board');
+const container = document.querySelector('.container');
 
 let currentPlayer = 'X';
 let gameActive = true;
@@ -36,6 +38,7 @@ const handleCellPlayed = (clickedCell, clickedCellIndex) => {
 
 const handleResultValidation = () => {
     let roundWon = false;
+    let winningCombination;
     for (let i = 0; i < winningConditions.length; i++) {
         const winCondition = winningConditions[i];
         let a = gameState[winCondition[0]];
@@ -46,6 +49,7 @@ const handleResultValidation = () => {
         }
         if (a === b && b === c) {
             roundWon = true;
+            winningCombination = winCondition;
             break;
         }
     }
@@ -53,6 +57,8 @@ const handleResultValidation = () => {
     if (roundWon) {
         statusText.textContent = `${currentPlayer} Wins!`;
         gameActive = false;
+        drawWinningLine(winningCombination);
+        showCelebration();
         return;
     }
 
@@ -71,6 +77,45 @@ const handlePlayerChange = () => {
     statusText.textContent = `${currentPlayer}'s Turn`;
 };
 
+const drawWinningLine = (combination) => {
+    const line = document.createElement('div');
+    line.classList.add('winning-line');
+
+    const startCell = cells[combination[0]];
+    const endCell = cells[combination[2]];
+    const startRect = startCell.getBoundingClientRect();
+    const endRect = endCell.getBoundingClientRect();
+    const boardRect = board.getBoundingClientRect();
+
+    const top = startRect.top - boardRect.top + startRect.height / 2;
+    const left = startRect.left - boardRect.left + startRect.width / 2;
+    const width = Math.hypot(endRect.left - startRect.left, endRect.top - startRect.top);
+    const angle = Math.atan2(endRect.top - startRect.top, endRect.left - startRect.left) * (180 / Math.PI);
+
+    line.style.top = `${top}px`;
+    line.style.left = `${left}px`;
+    line.style.width = `${width}px`;
+    line.style.transform = `rotate(${angle}deg)`;
+
+    board.appendChild(line);
+};
+
+const showCelebration = () => {
+    const celebration = document.createElement('div');
+    celebration.classList.add('celebration');
+    container.appendChild(celebration);
+
+    for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.top = `${Math.random() * -100}vh`;
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.animationDelay = `${Math.random() * 3}s`;
+        celebration.appendChild(confetti);
+    }
+};
+
 const handleResetGame = () => {
     gameActive = true;
     currentPlayer = "X";
@@ -80,6 +125,16 @@ const handleResetGame = () => {
         cell.classList.remove('x');
         cell.classList.remove('o');
     });
+
+    const winningLine = document.querySelector('.winning-line');
+    if (winningLine) {
+        winningLine.remove();
+    }
+
+    const celebration = document.querySelector('.celebration');
+    if (celebration) {
+        celebration.remove();
+    }
 };
 
 cells.forEach((cell, index) => {
