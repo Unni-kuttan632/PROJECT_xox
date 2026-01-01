@@ -63,7 +63,7 @@ const handleResultValidation = () => {
     }
 
     let roundDraw = !gameState.includes("");
-    if (roundDraw) {
+    if (roundDraw) {.
         statusText.textContent = `Draw!`;
         gameActive = false;
         return;
@@ -83,19 +83,21 @@ const drawWinningLine = (combination) => {
 
     const startCell = cells[combination[0]];
     const endCell = cells[combination[2]];
-    const startRect = startCell.getBoundingClientRect();
-    const endRect = endCell.getBoundingClientRect();
-    const boardRect = board.getBoundingClientRect();
+    
+    const startX = startCell.offsetLeft + startCell.offsetWidth / 2;
+    const startY = startCell.offsetTop + startCell.offsetHeight / 2;
+    const endX = endCell.offsetLeft + endCell.offsetWidth / 2;
+    const endY = endCell.offsetTop + endCell.offsetHeight / 2;
 
-    const top = startRect.top - boardRect.top + startRect.height / 2;
-    const left = startRect.left - boardRect.left + startRect.width / 2;
-    const width = Math.hypot(endRect.left - startRect.left, endRect.top - startRect.top);
-    const angle = Math.atan2(endRect.top - startRect.top, endRect.left - startRect.left) * (180 / Math.PI);
+    const width = Math.hypot(endX - startX, endY - startY);
+    const angle = Math.atan2(endY - startY, endX - startX) * (180 / Math.PI);
 
-    line.style.top = `${top}px`;
-    line.style.left = `${left}px`;
+    line.style.top = `${startY}px`;
+    line.style.left = `${startX}px`;
     line.style.width = `${width}px`;
     line.style.transform = `rotate(${angle}deg)`;
+    line.style.transformOrigin = '0 0';
+
 
     board.appendChild(line);
 };
