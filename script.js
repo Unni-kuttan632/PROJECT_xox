@@ -9,14 +9,14 @@ let gameActive = true;
 let gameState = ["", "", "", "", "", "", "", "", ""];
 
 const winningConditions = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
+    [0, 1, 2], // Row 1
+    [3, 4, 5], // Row 2
+    [6, 7, 8], // Row 3
+    [0, 3, 6], // Column 1
+    [1, 4, 7], // Column 2
+    [2, 5, 8], // Column 3
+    [0, 4, 8], // Diagonal 1
+    [2, 4, 6]  // Diagonal 2
 ];
 
 const handleCellClick = (e) => {
@@ -63,7 +63,7 @@ const handleResultValidation = () => {
     }
 
     let roundDraw = !gameState.includes("");
-    if (roundDraw) {.
+    if (roundDraw) {
         statusText.textContent = `Draw!`;
         gameActive = false;
         return;
@@ -81,23 +81,26 @@ const drawWinningLine = (combination) => {
     const line = document.createElement('div');
     line.classList.add('winning-line');
 
-    const startCell = cells[combination[0]];
-    const endCell = cells[combination[2]];
-    
-    const startX = startCell.offsetLeft + startCell.offsetWidth / 2;
-    const startY = startCell.offsetTop + startCell.offsetHeight / 2;
-    const endX = endCell.offsetLeft + endCell.offsetWidth / 2;
-    const endY = endCell.offsetTop + endCell.offsetHeight / 2;
+    const firstCell = cells[combination[0]];
+    const lastCell = cells[combination[2]];
 
-    const width = Math.hypot(endX - startX, endY - startY) - 50;
+    const boardRect = board.getBoundingClientRect();
+    const firstRect = firstCell.getBoundingClientRect();
+    const lastRect = lastCell.getBoundingClientRect();
+
+    const startX = firstRect.left + firstRect.width / 2 - boardRect.left;
+    const startY = firstRect.top + firstRect.height / 2 - boardRect.top;
+    const endX = lastRect.left + lastRect.width / 2 - boardRect.left;
+    const endY = lastRect.top + lastRect.height / 2 - boardRect.top;
+
+    const length = Math.hypot(endX - startX, endY - startY);
     const angle = Math.atan2(endY - startY, endX - startX) * (180 / Math.PI);
 
+    line.style.width = `${length}px`;
     line.style.top = `${startY}px`;
-    line.style.left = `${startX + 25}px`;
-    line.style.width = `${width}px`;
+    line.style.left = `${startX}px`;
     line.style.transform = `rotate(${angle}deg)`;
-    line.style.transformOrigin = '0 0';
-
+    line.style.transformOrigin = 'top left';
 
     board.appendChild(line);
 };
