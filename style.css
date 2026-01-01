@@ -1,0 +1,119 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+}
+
+.title {
+    font-size: 3rem;
+    color: #fff;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+    animation: flicker 1.5s infinite alternate;
+}
+
+@keyframes flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        text-shadow:
+        0 0 4px #fff,
+        0 0 11px #ff0000,
+        0 0 19px #ff0000,
+        0 0 40px #ff0000,
+        0 0 80px #ff0000,
+        0 0 90px #ff0000,
+        0 0 100px #ff0000,
+        0 0 150px #ff0000;
+    }
+    20%, 24%, 55% {
+        text-shadow: none;
+    }
+}
+
+.board-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    background-color: #111;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background-color: #222;
+    border: 1px solid #444;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    transition: background-color 0.3s ease;
+}
+
+.cell:hover {
+    background-color: #333;
+}
+
+.cell.x::before {
+    content: 'X';
+    color: #ff0000;
+    text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+.cell.o::before {
+    content: 'O';
+    color: #00f;
+    text-shadow: 0 0 5px #00f, 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f;
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+    }
+    to {
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000;
+    }
+}
+
+.status-container {
+    margin-top: 2rem;
+}
+
+.status {
+    font-size: 1.5rem;
+}
+
+.reset-button {
+    margin-top: 1rem;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+    background-color: #444;
+}
