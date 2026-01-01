@@ -7,10 +7,12 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden;
 }
 
 .container {
     text-align: center;
+    position: relative;
 }
 
 .title {
@@ -41,6 +43,7 @@ body {
     display: flex;
     justify-content: center;
     margin-top: 2rem;
+    position: relative;
 }
 
 .board {
@@ -52,6 +55,7 @@ body {
     border: 2px solid #333;
     border-radius: 10px;
     padding: 10px;
+    position: relative;
 }
 
 .cell {
@@ -71,18 +75,34 @@ body {
     background-color: #333;
 }
 
+.cell.x::before, .cell.o::before {
+    animation: pop 0.3s ease-in-out;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(0);
+    }
+    80% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 .cell.x::before {
     content: 'X';
     color: #ff0000;
     text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
-    animation: glow 1s ease-in-out infinite alternate;
+    animation: glow 1s ease-in-out infinite alternate, pop 0.3s ease-in-out;
 }
 
 .cell.o::before {
     content: 'O';
     color: #00f;
     text-shadow: 0 0 5px #00f, 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f;
-    animation: glow 1s ease-in-out infinite alternate;
+    animation: glow 1s ease-in-out infinite alternate, pop 0.3s ease-in-out;
 }
 
 @keyframes glow {
@@ -91,6 +111,21 @@ body {
     }
     to {
         text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000;
+    }
+}
+
+.winning-line {
+    position: absolute;
+    background-color: white;
+    height: 5px;
+    width: 0;
+    animation: draw 0.5s forwards;
+    transform-origin: left;
+}
+
+@keyframes draw {
+    to {
+        width: 100%;
     }
 }
 
@@ -116,4 +151,34 @@ body {
 
 .reset-button:hover {
     background-color: #444;
+}
+
+.celebration {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #f00;
+    opacity: 0;
+    animation: confetti-fall 3s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
 }
